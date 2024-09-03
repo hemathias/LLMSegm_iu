@@ -227,7 +227,7 @@ if __name__=="__main__":
 
     # Default training arguments based on the code/paper
     training_args = TrainingArguments(
-            output_dir=path2out_dir + "glot500-iu-morph",
+            output_dir=path2out_dir + "/glot500-iu-morph",
             learning_rate=2e-5,
             per_device_train_batch_size=256,
             per_device_eval_batch_size=256,
@@ -278,7 +278,7 @@ if __name__=="__main__":
 
     predictions = [re.sub("@", " ", p) for p in predictions]
     df = pd.DataFrame({"word": data_test[0].tolist(), "predictions": predictions})
-    df.to_csv(f"{path2out_dir}preds/{lang}.pred", header=None, index=False, sep="\t")
+    df.to_csv(f"{path2out_dir}/preds/{lang}.pred", header=None, index=False, sep="\t")
 
     P = TP / (TP + FP)
     R = TP / (TP + FN)
