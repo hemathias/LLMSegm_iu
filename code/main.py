@@ -3,6 +3,7 @@
 import itertools
 import json
 import re
+import sys
 
 import evaluate
 import numpy as np
@@ -172,19 +173,27 @@ def test_model(model, test_data):
 
 # These should have been turned into csv-files using the format_data.py file.
 def load_lang_data(path2data_dir, lang):
-    data_train = pd.read_csv(path2data_dir + f"train.{lang}.csv", sep="\t", header=None)
-    data_dev = pd.read_csv(path2data_dir + f"dev.{lang}.csv", sep="\t", header=None)
-    data_test = pd.read_csv(path2data_dir + f"test.{lang}.csv", sep="\t", header=None)
+    data_train = pd.read_csv(path2data_dir + f"/train.{lang}.csv", sep="\t", header=None)
+    data_dev = pd.read_csv(path2data_dir + f"/dev.{lang}.csv", sep="\t", header=None)
+    data_test = pd.read_csv(path2data_dir + f"/test.{lang}.csv", sep="\t", header=None)
     return data_train, data_dev, data_test
 
 
 if __name__=="__main__":
 
+
+
+
     # Vars
-    path2data_dir = "/home/mathias/Desktop/HI/hpc/inuktitut/llm_segm/reimplementation/"
-    path2out_dir = "/home/mathias/Desktop/HI/hpc/inuktitut/llm_segm/reimplementation/out/"
-    lang = "iu"
-    model_name = "cis-lmu/glot500-base"
+    #path2data_dir = "/p/project1/joaiml/stenlund1/proj1/LLMSegm_iu/data/data_small"
+    #path2out_dir = "/p/project1/joaiml/stenlund1/proj1/LLMSegm_iu/out"
+    #lang = "iu"
+    #model_name = "cis-lmu/glot500-base"
+
+    path2data_dir = sys.argv[1]
+    path2out_dir = sys.argv[2]
+    model_name = sys.argv[3]
+    lang = sys.argv[4]
 
     # Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name)
