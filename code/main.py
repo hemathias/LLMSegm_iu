@@ -181,9 +181,6 @@ def load_lang_data(path2data_dir, lang):
 
 if __name__=="__main__":
 
-
-
-
     # Vars
     #path2data_dir = "/p/project1/joaiml/stenlund1/proj1/LLMSegm_iu/data/data_small"
     #path2out_dir = "/p/project1/joaiml/stenlund1/proj1/LLMSegm_iu/out"
@@ -288,7 +285,7 @@ if __name__=="__main__":
     F1 = 2 * P * R / (P + R)
 
 
-    with open(f"{path2out_dir}results/results.{lang}.json", "w") as results_f:
+    with open(f"{path2out_dir}/results/results.{lang}.json", "w") as results_f:
             results_map = {
                 "ACC": np.round(100 * ACC / len(data_test), 2),
                 "Prec": np.round(100 * P, 2),
