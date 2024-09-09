@@ -158,6 +158,11 @@ def test_model(model, test_data):
         ww.append(c)
         predicted = "".join(ww)
         predictions.append(predicted)
+
+        # I believe that the calculations are done on a per-word-basis.
+        # The var "predicted" will be the input word with the models predicted morpb boundaries "@".
+        # This is compared directly to the ground truth segmentations.
+
         if ground == predicted:
             ACC += 1
         tp, fp, fn = eval_word(ground, predicted)
