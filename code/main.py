@@ -171,6 +171,10 @@ def test_model(model, test_data):
         FN += fn
     return ACC, TP, FP, FN, predictions
 
+def print_statement_wrapper(statement):
+    stars = "*****************************************************\n"
+    print(f"{stars}{statement}\n{stars}")
+
 # Name the data as: 
 # train.iu.csv
 # dev.iu.csv
@@ -192,6 +196,7 @@ if __name__=="__main__":
     #lang = "iu"
     #model_name = "cis-lmu/glot500-base"
 
+    
     path2data_dir = sys.argv[1]
     path2out_dir = sys.argv[2]
     model_name = sys.argv[3]
@@ -213,7 +218,9 @@ if __name__=="__main__":
     embs.weight.data[-2] = 0  # embs.weight[2203].detach()
 
     # Loads train, dev and test data as pandas dataframes from csv. unbounded,un@bound@ed
+    print("Loading train, dev and test...")
     data_train, data_dev, data_test = load_lang_data(path2data_dir, lang)
+    print_statement_wrapper("Successfully loaded train, dev and test...")
 
     # Instantiates dataset from the train, dev dataframes.
     # For example; data_train[1] will correspond to the column with the separated words. [0] the full word.
@@ -248,7 +255,8 @@ if __name__=="__main__":
             warmup_steps=20,
             )
     
-    # Push the model to GPU, 
+    # Push the model to GPU,
+    print_statement_wrapper("Pushing model to GPU...")
     model.cuda()
     model.train()
 
@@ -270,13 +278,16 @@ if __name__=="__main__":
     ).to(model.device)
 
     # Initiates training
+    print_statement_wrapper("Starting training...")
     trainer.train()
+    print_statement_wrapper("Training completed")
+    print_statement_wrapper(f"Model saved at: {path2out_dir + "/glot500-iu-morph"}")
 
 ################----- EVALUATION STARTS HERE -----##############
 ################----- MOVE TO SEPARATE FILE ------##############
     
     # Initiates evaluation mode for model.
-
+    print("Starting evaltuation on test")
     model.eval()
 
     ACC, TP, FP, FN, predictions = test_model(model, data_test[1].tolist())
@@ -302,3 +313,5 @@ if __name__=="__main__":
                 "LANG": lang,
             }
             json.dump(results_map, results_f, indent=4)
+    print(f"Dumped predictions to: {path2out_dir}/preds/{lang}.pred")
+    print(f"Dumped results to: {path2out_dir}/results/results.{lang}.json")
